@@ -8,8 +8,8 @@ externalized out of the kernel and answered over the listener bridge.
   `POST /dns-query` with an `application/dns-message` body), always TLS
 - the classic UDP face (`udp-bind`, the datagram variant)
 
-The payload is one framework-dependent .NET assembly tree under `bin/`
-(`dotnet bin/server.dll`) -- one payload for every (os, arch) cell,
+The payload is one framework-dependent .NET assembly tree under `server/`
+(`dotnet server/server.dll`) -- one payload for every (os, arch) cell,
 because the kernel host always carries the runtime; Native-AOT single
 files ride the edge-host work.
 
@@ -46,13 +46,13 @@ platform repository.
 ## Building and testing
 
 ```
-./build.sh        # dotnet publish into bin/, then the codec self-test
+./build.sh        # dotnet publish into server/, then the codec self-test
 ```
 
 The self-test pins the route-forward codec's wire form against the
 kernel's own bytes; a publish never rides an unverified codec. `rod mod
 publish` packs what `[package] include` names in rod-module.toml -- run
-`./build.sh` first so `bin/` holds the tree.
+`./build.sh` first so `server/` holds the tree.
 
 ## Conformance
 

@@ -28,7 +28,7 @@ third-party-medium = false
 channel = "degraded"
 carriers = ["dns"]
 command = "dotnet"
-args = ["bin/server.dll"]
+args = ["server/server.dll"]
 # The DNS dial: the public endpoint is the zone this listener answers
 # under, the UDP listener's own model, and the RFC 8484 face terminates
 # TLS whatever the dial looks like.
@@ -48,4 +48,4 @@ required = false
 description = "The host:port the RFC 8484 HTTPS face binds; unset means no DoH face."
 
 [package]
-include = ["rod-module.toml", "bin/**", "README.md"]
+include = ["rod-module.toml", "server/**", "README.md"]

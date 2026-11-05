@@ -124,7 +124,12 @@ internal static partial class Self
 {
     public sealed class Params
     {
+        // The manifest's config-schema rows are kebab-case; the source
+        // generator's default camelCase would never match them.
+        [System.Text.Json.Serialization.JsonPropertyName("udp-bind")]
         public string? UdpBind { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("http-bind")]
         public string? HttpBind { get; set; }
     }
 
