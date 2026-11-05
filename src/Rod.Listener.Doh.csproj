@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>server</AssemblyName>
+    <RootNamespace>Rod.Listener.Doh</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- One framework-dependent assembly tree, one payload for every cell:
+         the kernel host always carries the runtime, so nothing larger is
+         earned yet. Native-AOT single files ride the edge-host work. -->
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+</Project>

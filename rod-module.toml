@@ -1,0 +1,51 @@
+# The official doh listener package (architecture.md Sec 8, ADR-025): the
+# DNS grammar's whole implant ingress, externalized out of the kernel --
+# the TXT contact wire carried as RFC 8484 DNS messages over an HTTPS body
+# (GET with the urlsafe-base64 dns parameter, POST with an
+# application/dns-message body) and the classic UDP variant beside it.
+# Every query crosses to the kernel over the bridge's route-forward
+# carriage as one POST /dns-query unit whose body is the DNS wire message;
+# the kernel answers with the same DnsContactAnswerer core the in-tree
+# UDP listener and DoH route drive (docs/extending/listeners.md).
+
+[module]
+name = "rod-listener-doh"
+version = "1.0.0"
+entry = "listener"
+license = "Apache-2.0"
+description = "The official doh listener: the DNS grammar over RFC 8484 and the UDP variant, answered by the kernel over the listener bridge."
+
+[compatibility]
+teamserver = "1.0.0"
+
+[opsec]
+lands-on-disk = true
+notes = "Operator-side infrastructure, not target-side: the package lands as a framework-dependent .NET assembly tree under the teamserver's module store (the kernel host always carries the runtime) and runs as a supervised child, binding one DoH front and one UDP socket per listener. The DoH face is always TLS -- server leaf only, no client certificate anywhere, issued by the engagement CA and handed over as a user-only PEM, so the resolver front does not fingerprint the DNS carriage; the UDP face is the classic datagram shape. The process itself parses no rod.v1 grammar, holds no engagement key, and learns no implant identity; the grammar stays id-only exactly as the in-tree DNS family kept it, and out-of-zone queries are REFUSED like any resolver refusing to be an open one."
+
+[listener]
+seal-tier = "id-only"
+third-party-medium = false
+channel = "degraded"
+carriers = ["dns"]
+command = "dotnet"
+args = ["bin/server.dll"]
+# The DNS dial: the public endpoint is the zone this listener answers
+# under, the UDP listener's own model, and the RFC 8484 face terminates
+# TLS whatever the dial looks like.
+public-endpoint-shape = "dns-zone"
+tls = "always"
+
+[[listener.params]]
+name = "udp-bind"
+kind = "string"
+required = false
+description = "The host:port the classic UDP DNS face binds; unset means no UDP face."
+
+[[listener.params]]
+name = "http-bind"
+kind = "string"
+required = false
+description = "The host:port the RFC 8484 HTTPS face binds; unset means no DoH face."
+
+[package]
+include = ["rod-module.toml", "bin/**", "README.md"]
